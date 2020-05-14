@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
 //  String titleInput,amountInput; // aren't final warning
@@ -11,12 +12,12 @@ class NewTransaction extends StatefulWidget {
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
-
-  void submitData() {
-    final title = titleController.text;
-    final amount = double.parse(amountController.text);
+  final _titleController = TextEditingController();
+  final _amountController = TextEditingController();
+  DateTime _finalDate;
+  void _submitData() {
+    final title = _titleController.text;
+    final amount = double.parse(_amountController.text);
     if (title.isEmpty || amount <= 0) {
       return;
     }
@@ -25,6 +26,22 @@ class _NewTransactionState extends State<NewTransaction> {
       amount,
     );
     Navigator.of(context).pop();
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+    ).then((value) {
+      if (value == null) {
+        return null;
+      }
+      setState(() {
+        _finalDate = value;
+      });
+    });
   }
 
   @override
@@ -58,30 +75,30 @@ class _NewTransactionState extends State<NewTransaction> {
             TextField(
               decoration: InputDecoration(labelText: 'Title'),
               //onChanged: (val) => titleInput = val,
-              controller: titleController,
-              onSubmitted: (_) => submitData(),
+              controller: _titleController,
+              onSubmitted: (_) => _submitData(),
             ),
             TextField(
               decoration: InputDecoration(labelText: 'Amount'),
               //onChanged: (val) => amountInput = val,
-              controller: amountController,
+              controller: _amountController,
               keyboardType: TextInputType.number,
               onSubmitted: (_) =>
-                  submitData(), //(_) underscore in function argument mean i accept the value but not need anymore in flutter
+                  _submitData(), //(_) underscore in function argument mean i accept the value but not need anymore in flutter
             ),
             Container(
-              height:70,
+              height: 70,
               child: Row(
                 children: <Widget>[
-                  Text('No Date Choosen!'),
+                  Expanded(
+                      child: Text(_finalDate != null
+                          ? 'Picked Date : ${DateFormat.yMd().format(_finalDate)}'
+                          : 'No Date Choosen!')),
                   FlatButton(
                     textColor: Theme.of(context).accentColor,
-                    child: Text(
-                      'Choose Date',
-                      style:TextStyle(fontWeight: FontWeight.bold)
-
-                    ),
-                    onPressed: () {},
+                    child: Text('Choose Date',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    onPressed: _presentDatePicker,
                   )
                 ],
               ),
@@ -90,7 +107,7 @@ class _NewTransactionState extends State<NewTransaction> {
               child: Text('Add Transaction'),
               color: Theme.of(context).primaryColor,
               textColor: Theme.of(context).textTheme.button.color,
-              onPressed: submitData,
+              onPressed: _submitData,
             )
           ],
         ),
