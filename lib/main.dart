@@ -19,10 +19,12 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.teal,
           accentColor: Colors.brown,
           textTheme: ThemeData.light().textTheme.copyWith(
-              headline4: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold)),
+                headline4: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+                button: TextStyle(color: Colors.white)
+              ),
           appBarTheme: AppBarTheme(
               textTheme: ThemeData.light().textTheme.copyWith(
                   headline6:
