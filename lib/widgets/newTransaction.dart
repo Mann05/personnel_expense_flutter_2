@@ -7,7 +7,7 @@ class NewTransaction extends StatefulWidget {
 //  String titleInput,amountInput; // aren't final warning
   final Function addNewTransaction;
 
-  NewTransaction(this.addNewTransaction);
+  const NewTransaction(this.addNewTransaction);
 
   @override
   _NewTransactionState createState() => _NewTransactionState();
@@ -102,7 +102,10 @@ class _NewTransactionState extends State<NewTransaction> {
                         child: Text(_finalDate != null
                             ? 'Picked Date : ${DateFormat.yMd().format(_finalDate)}'
                             : 'No Date Choosen!')),
-                    AdaptiveFlatButton(text: 'Choose Date',handler: _presentDatePicker),
+                    AdaptiveFlatButton(
+                      text: 'Choose Date',
+                      handler: _presentDatePicker,
+                    ),
                   ],
                 ),
               ),
